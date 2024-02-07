@@ -19,7 +19,7 @@ const News = () => {
           zoom={12}
           style={{borderRadius: '10px'}}
         >
-          {async ({ TileLayer, Marker, Popup, AttributionControl }) => {
+          {({ TileLayer, Marker, Popup }) => {
             return (
               <>
                 <TileLayer

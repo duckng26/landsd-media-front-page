@@ -1,6 +1,8 @@
 import dynamic from 'next/dynamic';
 
-import DynamicMap from './DynamicMap'
+const DynamicMap = dynamic(() => import('./DynamicMap'), {
+  ssr: false
+});
 
 // Set default sizing to control aspect ratio which will scale responsively
 // but also help avoid layout shift
