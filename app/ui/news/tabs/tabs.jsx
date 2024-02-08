@@ -39,7 +39,7 @@ const Tab = ({ label, i }) => {
         style={{
           borderBottomStyle: "solid",
           borderBottomColor: "#00b19f",
-          borderBottomWidth: active === i ? "1px" : "0px",
+          borderBottomWidth: active === i ? "2px" : "0px",
           left: active === i ? "0" : "-100px",
           transition: "left 1s ease"
         }}

@@ -11,7 +11,7 @@ const Rightbar = ({name}) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <Indicator handleToggle={setIsOpen} isOpen={isOpen} />
-        <h3>{name}</h3>
+        <h3 className={styles.indicatorTitle}>{name}</h3>
       </div>
       {isOpen && (
         <>
