@@ -1,0 +1,43 @@
+.container {
+  width: 300px;
+  /* border: 2px solid blue; */
+  margin: 0 auto;
+  display: flex;
+}
+
+.row_flex {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 2px solid #f6f6f6;
+  width: 60%;
+}
+
+.tab {
+  cursor: pointer;
+  text-align: center;
+
+}
+
+
+.underline {
+  position: relative;
+  transition: border-bottom ease-in 100ms;
+}
+
+.underline_active {
+  color: #00b19f;
+  width: 50px;
+}
+
+.underline {
+  position: relative;
+  width: 100px;
+}
+
+.tab_name {
+  font-size: 1rem;
+}
+
+.tab_name_active {
+  color: #00b19f;
+}

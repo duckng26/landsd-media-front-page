@@ -55,3 +55,11 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.header {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+}
