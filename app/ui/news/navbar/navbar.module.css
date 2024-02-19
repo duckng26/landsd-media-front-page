@@ -44,6 +44,7 @@
 .user{
   display: flex;
   align-items: center;
+  overflow: hidden;
   gap: 20px;
 }
 

@@ -2,6 +2,12 @@
   display: flex;
 }
 
+@media only screen and (max-width: 998px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
 .menu {
   flex: 1;
   background-color: var(--bgSoft);
@@ -26,6 +32,12 @@
   flex-direction: row;
   align-items: flex-start;
   gap: 20px;
+}
+
+@media only screen and (max-width: 998px) {
+  .main {
+    flex-direction: column;
+  }
 }
 
 .cards {

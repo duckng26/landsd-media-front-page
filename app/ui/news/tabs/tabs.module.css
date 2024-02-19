@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-around;
   border-bottom: 2px solid #f6f6f6;
-  width: 60%;
+  width: 100%;
 }
 
 .tab {

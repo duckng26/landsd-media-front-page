@@ -41,7 +41,8 @@ const Tab = ({ label, i }) => {
           borderBottomColor: "#00b19f",
           borderBottomWidth: active === i ? "2px" : "0px",
           left: active === i ? "0" : "-100px",
-          transition: "left 1s ease"
+          transition: "left 1s ease",
+          bottom: '-2px'
         }}
       ></div>
     </div>

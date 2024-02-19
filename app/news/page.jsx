@@ -9,32 +9,36 @@ import { MockDataPoint } from "../data/sample_data";
 import Detailbar from "../ui/news/detailbar/detailbar";
 
 const DEFAULT_CENTER = [22.349, 114.136];
-let apikey = '28ba7bd74cbe4af890d90991f9d5a86e';    // key for text analytic platform
+let apikey = "28ba7bd74cbe4af890d90991f9d5a86e"; // key for text analytic platform
 
 const News = () => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  const sideClassName = isDetailOpen?styles.twoSide:styles.side;
+  const sideClassName = isDetailOpen ? styles.twoSide : styles.side;
 
   const handleOpenDetail = () => {
     setIsDetailOpen(!isDetailOpen);
-  }
+  };
 
   return (
     <div className={styles.wrapper}>
-        <Tabs/>
+      <Tabs />
       <div className={styles.main}>
         <Map
           className={styles.homeMap}
           center={DEFAULT_CENTER}
-          zoom={12}
-          style={{ borderRadius: "10px", height: "600px", flex: "3"}}
+          zoom={15}
+          style={{ borderRadius: "10px", height: "600px", flex: "3" }}
         >
           {({ TileLayer, Marker, Popup }) => {
             return (
               <>
                 <TileLayer
                   url={`https://api.hkmapservice.gov.hk/osm/xyz/basemap/WGS84/tile/{z}/{x}/{y}.png?key=${apikey}`}
+                  attribution={`<a href='https://api.portal.hkmapservice.gov.hk/disclaimer' target='_blank'>Map from Lands Department</a> | Leaflet`}
+                />
+                <TileLayer
+                  url={`https://api.hkmapservice.gov.hk/osm/xyz/label-en/WGS84/tile/{z}/{x}/{y}.png?key=${apikey}`}
                   attribution={`<a href='https://api.portal.hkmapservice.gov.hk/disclaimer' target='_blank'>Map from Lands Department</a> | Leaflet`}
                 />
                 {MockDataPoint.map((data) => (
@@ -48,12 +52,14 @@ const News = () => {
             );
           }}
         </Map>
-      <div className={sideClassName}>
-        <Rightbar name={"News Summary"} openDetail={handleOpenDetail}/>
-      </div>
-      {isDetailOpen && <div className={sideClassName}>
-        <Detailbar name={"Details"} closeDetail={handleOpenDetail}/>
-      </div>}
+        <div className={sideClassName}>
+          <Rightbar name={"News Summary"} openDetail={handleOpenDetail} />
+        </div>
+        {isDetailOpen && (
+          <div className={sideClassName}>
+            <Detailbar name={"Details"} closeDetail={handleOpenDetail} />
+          </div>
+        )}
       </div>
     </div>
   );
