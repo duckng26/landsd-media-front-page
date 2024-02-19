@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import styles from "./tabs.module.css";
 const activeTabContext = createContext({});
 
-const labels = ["Default Profile", "Profile 1", "Profile 2", "Profile 3"];
+const labels = ["Default", "Profile 1", "Profile 2", "Profile 3"];
 const INITIAL_TAB = 0;
 export const Tabs = () => {
   const [active, setActive] = useState(INITIAL_TAB);
