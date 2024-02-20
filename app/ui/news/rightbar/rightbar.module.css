@@ -10,6 +10,15 @@
   cursor: pointer;
 }
 
+.itemActive {
+  background: #ecfbef;
+  padding: 20px 24px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
 .item:hover {
   background: #ecfbef;
 }

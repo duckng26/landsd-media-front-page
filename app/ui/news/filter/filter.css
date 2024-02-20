@@ -1,0 +1,8 @@
+
+.react-datepicker__close-icon::after  {
+  background-color: #00b19f;
+}
+
+label {
+  font-size: 13px;
+}

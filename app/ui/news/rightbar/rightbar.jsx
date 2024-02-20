@@ -3,9 +3,16 @@ import styles from "./rightbar.module.css";
 import { MdPlayCircleFilled, MdReadMore } from "react-icons/md";
 import { Indicator } from '../indicator/indicator'
 import { useState } from "react";
+//TODO: update active item along with event open detail
 
 const Rightbar = ({name, openDetail}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState('');
+  
+  const handleItemClick = (activeItem) => {
+    setActiveItem('1');
+    openDetail();
+  }
   
   return (
     <div className={styles.container}>
@@ -15,7 +22,7 @@ const Rightbar = ({name, openDetail}) => {
       </div>
       {isOpen && (
         <>
-          <div className={styles.item} onClick={openDetail}>
+          <div className={activeItem?styles.itemActive:styles.item} onClick={() => handleItemClick(activeItem)}>
             <div className={styles.bgContainer}></div>
             <div className={styles.text}>
               <h3 className={styles.title}>Lorem ipsum dolor</h3>
