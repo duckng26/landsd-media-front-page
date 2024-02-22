@@ -7,7 +7,7 @@ const Homepage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    setTimeout(router.push('/news'),500);
+    setTimeout(router.push('/login'),500);
     return;
   }, [])
 
