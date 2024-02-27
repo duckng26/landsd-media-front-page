@@ -1,27 +1,16 @@
 "use client";
 
-import { useState, forwardRef} from "react";
+import { useState, forwardRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import styles from "../ui/news/news.module.css";
-import Rightbar from "../ui/news/rightbar/rightbar";
-import Map from "../ui/news/map/Map";
-import { Tabs } from "../ui/news/tabs/tabs";
+import styles from "../ui/keyword/keyword.module.css";
 import { Filter } from "../ui/news/filter/filter";
-import Detailbar from "../ui/news/detailbar/detailbar";
+import { KeywordContainer } from "../ui/keyword/keywordContainer/keywordContainer";
 
-const DEFAULT_CENTER = [22.349, 114.136];
 
-const News = () => {
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
+const Keyword = () => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
-
-  const sideClassName = isDetailOpen ? styles.twoSide : styles.side;
-
-  const handleOpenDetail = () => {
-    setIsDetailOpen(!isDetailOpen);
-  };
 
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
     <button
@@ -60,26 +49,32 @@ const News = () => {
           <label>District</label>
           <input className={styles.inputFilter} type="text"></input>
         </div>
-      </Filter>
-      <Tabs />
-      <div className={styles.main}>
-        <Map
-          className={styles.homeMap}
-          center={DEFAULT_CENTER}
-          zoom={15}
-          style={{ borderRadius: "10px", height: "600px", flex: "3" }}
-        />
-        <div className={sideClassName}>
-          <Rightbar name={"News Summary"} openDetail={handleOpenDetail} />
+        <div className={styles.inputContainter}>
+          <label>Category</label>
+          <input className={styles.inputFilter} type="text"></input>
         </div>
-        {isDetailOpen && (
-          <div className={sideClassName}>
-            <Detailbar name={"Details"} closeDetail={handleOpenDetail} />
-          </div>
-        )}
+      </Filter>
+      <Filter>
+        <div className={styles.inputContainter}>
+          <label>Topic</label>
+          <input className={styles.inputFilter} type="text"></input>
+        </div>
+        <div className={styles.inputContainter}>
+          <label>Subtopic</label>
+          <input className={styles.inputFilter} type="text"></input>
+        </div>
+        <div className={styles.inputContainter}>
+          <label>Keyword</label>
+          <input className={styles.inputFilter} type="text"></input>
+        </div>
+      </Filter>
+      <div className={styles.main}>
+           <KeywordContainer title={'Core Keyword'}></KeywordContainer>
+           <KeywordContainer title={'Trending Keyword'}></KeywordContainer>
+           <KeywordContainer title={'Keyword Suggestions'}></KeywordContainer>
       </div>
     </div>
   );
 };
 
-export default News;
+export default Keyword;

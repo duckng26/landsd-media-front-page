@@ -27,8 +27,12 @@ const Map = ({ children, className, width, height, ...rest }) => {
     mapClassName = `${mapClassName} ${className}`;
   }
 
+  const handleOnclick = (e) => {
+    // console.log(e.containerPoint)
+  }
+
   return (
-    <MapContainer className={mapClassName} {...rest}>
+    <MapContainer className={mapClassName} {...rest} doubleClickZoom>
       <TileLayer
         url={`https://api.hkmapservice.gov.hk/osm/xyz/basemap/WGS84/tile/{z}/{x}/{y}.png?key=${apikey}`}
         attribution={`<a href='https://api.portal.hkmapservice.gov.hk/disclaimer' target='_blank'>Map from Lands Department</a> | Leaflet`}
@@ -37,7 +41,7 @@ const Map = ({ children, className, width, height, ...rest }) => {
         url={`https://api.hkmapservice.gov.hk/osm/xyz/label-en/WGS84/tile/{z}/{x}/{y}.png?key=${apikey}`}
         attribution={`<a href='https://api.portal.hkmapservice.gov.hk/disclaimer' target='_blank'>Map from Lands Department</a> | Leaflet`}
       />
-      <MarkerClusterGroup>
+      <MarkerClusterGroup onClick={handleOnclick}>
         {MockDataPoint.map((data) => (
           <Marker position={data.geometry} icon={icon}>
             <Popup>

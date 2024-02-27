@@ -24,6 +24,11 @@ const menuItems = [
         path: "/news",
         icon: <MdDashboard />,
       },
+      {
+        title: "Keyword",
+        path: "/keyword",
+        icon: <MdDashboard />,
+      },
     ],
   },
   {

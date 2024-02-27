@@ -7,11 +7,13 @@
   border-radius: 10px;
   margin-bottom: 20px;
   position: relative;
+  transition: all 0.2s;
   cursor: pointer;
 }
 
 .itemActive {
   background: #ecfbef;
+  transition: all 0.2s;
   padding: 20px 24px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -68,6 +70,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .header {

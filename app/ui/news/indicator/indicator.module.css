@@ -10,6 +10,7 @@
   height: 50px;
   color: #00b19f;
   font-weight: bold;
+  transition: all 0.2s;
 }
 
 
