@@ -3,14 +3,14 @@
 // import { authenticate } from "@/app/lib/actions";
 import styles from "./loginForm.module.css";
 // import { useFormState } from "react-dom";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const LoginForm = () => {
   // const [state, formAction] = useFormState(authenticate, undefined);
 
-  const router = useRouter()
-  
+  const router = useRouter();
+
   return (
     <form className={styles.form}>
       <Image src={"/logo.png"} alt="logo" width="150" height="30" />
@@ -20,18 +20,17 @@ const LoginForm = () => {
       </div>
       <div className={styles.inputGroup}>
         <div className={styles.inputLabelIcon}>
-          <span class="text-gray-500 sm:text-sm">$</span>
+          <span className="text-gray-500 sm:text-sm">$</span>
         </div>
         <input type="email" placeholder="Email Address" name="email" />
       </div>
       <div className={styles.inputGroup}>
         <div className={styles.inputLabelIcon}>
-          <span class="text-gray-500 sm:text-sm">$</span>
+          <span className="text-gray-500 sm:text-sm">$</span>
         </div>
         <input type="password" placeholder="Password" name="password" />
       </div>
-      <button onClick={() => router.push('/news')} >Login</button>
-      {/* {state && state} */}
+      <button onClick={() => router.push("/disclaimer")}>Login</button>
     </form>
   );
 };

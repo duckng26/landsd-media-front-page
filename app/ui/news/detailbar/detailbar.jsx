@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchNewsData } from "@/app/news/page";
 import styles from "./detailbar.module.css";
 import Map from "../map/Map";
 import { MockDataPoint } from "../../../data/sample_data";
+import { fetchNewsData } from "../../../lib/clientActions";
 
 const DEFAULT_CENTER = [22.349, 114.136];
 let apikey = "28ba7bd74cbe4af890d90991f9d5a86e"; // key for text analytic platform
@@ -13,7 +13,9 @@ const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
     queryFn: fetchNewsData,
   });
 
-  const sourceList = Object.entries( data?.data.dct_GrpST_Src_GeoTag[id].sources ).map(([key, value]) => value);
+  const sourceList = Object.entries(
+    data?.data.dct_GrpST_Src_GeoTag[id].sources
+  ).map(([key, value]) => value);
 
   return (
     <div className={styles.container}>
@@ -31,17 +33,34 @@ const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
       ) : status === "error" ? (
         <span>Error: {error.message}</span>
       ) : (
-        sourceList.map((src, key) => <div className={styles.item} key={key} onClick={() => selectGroup(src.geo_tags)}>
-          <div className={styles.text}>
-            <span className={styles.link}>
-              <span className={styles.square}></span>
-              <a href="/">{src.title}</a>
-            </span>
-            <p className={styles.desc}>
-             {src.content}
-            </p>
+        sourceList.map((src, key) => (
+          <div
+            className={styles.item}
+            key={key}
+            onClick={() => selectGroup(src.geo_tags)}
+          >
+            <div className={styles.text}>
+              <span className={styles.link}>
+                <span className={styles.square}></span>
+                <a href="/">{src.title}</a>
+              </span>
+              <p className={styles.desc}>{src.content}</p>
+              <div className={styles.nuggetsList}>
+                <span className={styles.addBtn} onClick={() => {}}>
+                  +
+                </span>
+                {Object.values(src.geo_tags).map(({ location }) => (
+                  <div className={styles.nuggetLocation}>
+                    {location}
+                    <span className={styles.removeBtn} onClick={() => {}}>
+                      +
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>)
+        ))
       )}
       <div className={styles.topicHeader}>
         <h5 className={styles.indicatorTitle}>Related Hot Keywords</h5>

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MdPlayCircleFilled, MdReadMore } from "react-icons/md";
 import { Indicator } from "../indicator/indicator";
 import { useState } from "react";
-import { fetchNewsData } from "@/app/news/page";
+import { fetchNewsData } from "../../../lib/clientActions";
 //TODO: update active item along with event open detail
 
 const Rightbar = ({ name, openDetail }) => {

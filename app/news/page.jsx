@@ -10,18 +10,19 @@ import Map from "../ui/news/map/Map";
 import { Tabs } from "../ui/news/tabs/tabs";
 import { Filter } from "../ui/news/filter/filter";
 import Detailbar from "../ui/news/detailbar/detailbar";
+import { fetchNewsData } from "../lib/clientActions";
 
 const DEFAULT_CENTER = [22.349, 114.136];
 
 const News = () => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [activeDetail, setActiveDetail] = useState('');
+  const [activeDetail, setActiveDetail] = useState("");
   const [activeGroupMarker, setActiveGroupMarker] = useState([]);
-  
+
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
 
-  const {status, data, isLoading, error } = useQuery({
+  const { status, data, isLoading, error } = useQuery({
     queryKey: ["news"],
     queryFn: fetchNewsData,
   });
@@ -29,12 +30,12 @@ const News = () => {
   const sideClassName = isDetailOpen ? styles.twoSide : styles.side;
 
   const handleOpenDetail = (id) => {
-    setActiveDetail(id)
+    setActiveDetail(id);
     setIsDetailOpen(!isDetailOpen);
   };
 
   const handleSelectGroup = (group) => {
-    setActiveGroupMarker(group)
+    setActiveGroupMarker(group);
   };
 
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
@@ -96,7 +97,12 @@ const News = () => {
             </div>
             {isDetailOpen && (
               <div className={sideClassName}>
-                <Detailbar name={"Details"} closeDetail={handleOpenDetail} id={activeDetail} selectGroup={handleSelectGroup}/>
+                <Detailbar
+                  name={"Details"}
+                  closeDetail={handleOpenDetail}
+                  id={activeDetail}
+                  selectGroup={handleSelectGroup}
+                />
               </div>
             )}
           </div>
@@ -107,17 +113,3 @@ const News = () => {
 };
 
 export default News;
-
-export const fetchNewsData = async () => {
-  try {
-    const response = await fetch("http://18.166.215.35/news/GrpST_Src_GeoTag");
-    if (!response.ok) {
-      throw new Error("Failed to fetch news data");
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching news data:", error.message);
-    throw error;
-  }
-};

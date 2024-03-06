@@ -108,6 +108,7 @@
 
 .nuggetsList {
   display: flex;
+  flex-flow: wrap;
   gap: 10px;
   margin-bottom: 10px;
 }
@@ -120,5 +121,39 @@
   border-radius: 5px;
   font-size: 12px;
   font-weight: bold;
+  cursor: pointer;
+}
+
+
+.nuggetLocation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  background-color: #fff;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  gap: 5px;
+}
+
+.removeBtn {
+  transform: rotate(45deg);
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addBtn {
+  color: #00b19f;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 8px;
+  background-color: #fff;
   cursor: pointer;
 }
