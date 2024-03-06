@@ -1,26 +1,29 @@
-import { useEffect } from "react";
 import { TileLayer, Marker, Popup, MapContainer } from "react-leaflet";
 import L from "leaflet";
-import MarkerClusterGroup from 'react-leaflet-cluster'
+import MarkerClusterGroup from "react-leaflet-cluster";
 
 import "leaflet/dist/leaflet.css";
-import { MockDataPoint } from "../../../data/sample_data";
 
 const icon = new L.Icon({
-  iconUrl:  "/marker-icon.png",
+  iconUrl: "/marker-icon.png",
   iconRetinaUrl: "/marker-icon.png",
   shadowUrl: "/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [10, 41],
   popupAnchor: [2, -40],
-})
+});
 
 import styles from "./map.module.css";
 
-
 let apikey = "28ba7bd74cbe4af890d90991f9d5a86e"; // key for text analytic platform
 
-const Map = ({ children, className, width, height, ...rest }) => {
+const Map = ({ className, width, height, dataSource, ...rest}) => {
+
+  const markerList = dataSource
+    ? Object.entries(dataSource).map(([key, value]) => value)
+    : [];
+
+  console.log(markerList)
   let mapClassName = styles.map;
 
   if (className) {
@@ -29,7 +32,7 @@ const Map = ({ children, className, width, height, ...rest }) => {
 
   const handleOnclick = (e) => {
     // console.log(e.containerPoint)
-  }
+  };
 
   return (
     <MapContainer className={mapClassName} {...rest} doubleClickZoom>
@@ -42,11 +45,9 @@ const Map = ({ children, className, width, height, ...rest }) => {
         attribution={`<a href='https://api.portal.hkmapservice.gov.hk/disclaimer' target='_blank'>Map from Lands Department</a> | Leaflet`}
       />
       <MarkerClusterGroup onClick={handleOnclick}>
-        {MockDataPoint.map((data) => (
-          <Marker position={data.geometry} icon={icon}>
-            <Popup>
-              {`${data.attributes.Name_of_Building} ${data.attributes.District}`}
-            </Popup>
+        {markerList?.map((data, key) => (
+          <Marker position={[835681, 818557]} icon={icon} key={key}>
+            <Popup>{`${data.location}`}</Popup>
           </Marker>
         ))}
       </MarkerClusterGroup>

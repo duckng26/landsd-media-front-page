@@ -54,9 +54,20 @@
   font-size: 12px;
 }
 
+.title {
+  display: block;
+  width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .desc {
   color: var(--textSoft);
   font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .button {

@@ -1,19 +1,29 @@
 import Image from "next/image";
 import styles from "./rightbar.module.css";
+import { useQuery } from "@tanstack/react-query";
 import { MdPlayCircleFilled, MdReadMore } from "react-icons/md";
-import { Indicator } from '../indicator/indicator'
+import { Indicator } from "../indicator/indicator";
 import { useState } from "react";
+import { fetchNewsData } from "@/app/news/page";
 //TODO: update active item along with event open detail
 
-const Rightbar = ({name, openDetail}) => {
+const Rightbar = ({ name, openDetail }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState('');
-  
+  const [activeItem, setActiveItem] = useState("");
+
+  const { status, data, isLoading, error } = useQuery({
+    queryKey: ["news"],
+    queryFn: fetchNewsData,
+  });
+
+  const { dct_GrpST_Src_GeoTag } = data?.data;
+
   const handleItemClick = (activeItem) => {
-    setActiveItem('1');
-    openDetail();
-  }
-  
+    setActiveItem(activeItem);
+    openDetail(activeItem);
+  };
+
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -22,17 +32,29 @@ const Rightbar = ({name, openDetail}) => {
       </div>
       {isOpen && (
         <>
-          <div className={activeItem?styles.itemActive:styles.item} onClick={() => handleItemClick(activeItem)}>
-            <div className={styles.bgContainer}></div>
-            <div className={styles.text}>
-              <h3 className={styles.title}>Lorem ipsum dolor</h3>
-              <span className={styles.subtitle}>Takes 4 minutes to learn</span>
-              <p className={styles.desc}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Reprehenderit eius libero perspiciatis recusandae possimus.
-              </p>
+          {status === "pending" ? (
+            "Loading..."
+          ) : status === "error" ? (
+            <span>Error: {error.message}</span>
+          ) : (
+            <div
+              className={activeItem ? styles.itemActive : styles.item}
+              onClick={() => handleItemClick('dcc37b57552a4f879b7c6e62ec87cfdc')}
+            >
+              <div className={styles.bgContainer}></div>
+              <div className={styles.text}>
+                <h3 className={styles.title}>
+                  {dct_GrpST_Src_GeoTag?.dcc37b57552a4f879b7c6e62ec87cfdc?.id}
+                </h3>
+                <span className={styles.subtitle}>
+                  {new Date(Date.now()).toUTCString()}
+                </span>
+                <p className={styles.desc}>
+                  {dct_GrpST_Src_GeoTag.dcc37b57552a4f879b7c6e62ec87cfdc.summary_abstractive}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </div>

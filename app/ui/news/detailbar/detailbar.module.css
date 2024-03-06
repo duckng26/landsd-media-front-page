@@ -6,6 +6,7 @@
   padding: 20px 24px;
   border-radius: 10px;
   margin-bottom: 20px;
+  cursor: pointer;
   position: relative;
 }
 
@@ -41,6 +42,11 @@
 .desc {
   color: var(--textSoft);
   font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .button {
