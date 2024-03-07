@@ -1,4 +1,4 @@
-export const MockDataPoint = [
+export const MockDataPoints = [
     {
         "attributes": {
             "OBJECTID": 11095,
@@ -10,8 +10,6 @@ export const MockDataPoint = [
         "geometry": {
             "lng": 114.15938885080617,
             "lat": 22.281967259730173,
-            "x": 835681,
-            "y": 818557
         }
     },
     {
@@ -26,8 +24,6 @@ export const MockDataPoint = [
         "geometry": {
             "lng": 114.1377197927948,
             "lat": 22.287020639913614,
-            "x": 835691,
-            "y": 818567
         }
     },
     {
@@ -41,8 +37,6 @@ export const MockDataPoint = [
         "geometry": {
             "lng": 114.12872552055602,
             "lat": 22.283848472848515,
-            "x": 835701,
-            "y": 818577
         }
     }
 ]

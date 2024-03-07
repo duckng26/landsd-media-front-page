@@ -49,8 +49,8 @@ const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
                 <span className={styles.addBtn} onClick={() => {}}>
                   +
                 </span>
-                {Object.values(src.geo_tags).map(({ location }) => (
-                  <div className={styles.nuggetLocation}>
+                {Object.values(src.geo_tags).map(({ location, key }) => (
+                  <div className={styles.nuggetLocation} key={key}>
                     {location}
                     <span className={styles.removeBtn} onClick={() => {}}>
                       +

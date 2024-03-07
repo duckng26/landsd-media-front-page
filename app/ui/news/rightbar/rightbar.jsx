@@ -39,18 +39,18 @@ const Rightbar = ({ name, openDetail }) => {
           ) : (
             <div
               className={activeItem ? styles.itemActive : styles.item}
-              onClick={() => handleItemClick('dcc37b57552a4f879b7c6e62ec87cfdc')}
+              onClick={() => handleItemClick('5d09ffb56e42459c9624a132f45cc7c9')}
             >
               <div className={styles.bgContainer}></div>
               <div className={styles.text}>
                 <h3 className={styles.title}>
-                  {dct_GrpST_Src_GeoTag?.dcc37b57552a4f879b7c6e62ec87cfdc?.id}
+                  {dct_GrpST_Src_GeoTag['5d09ffb56e42459c9624a132f45cc7c9'].id}
                 </h3>
                 <span className={styles.subtitle}>
                   {new Date(Date.now()).toUTCString()}
                 </span>
                 <p className={styles.desc}>
-                  {dct_GrpST_Src_GeoTag.dcc37b57552a4f879b7c6e62ec87cfdc.summary_abstractive}
+                  {dct_GrpST_Src_GeoTag['5d09ffb56e42459c9624a132f45cc7c9'].summary_abstractive}
                 </p>
               </div>
             </div>

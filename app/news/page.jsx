@@ -90,7 +90,6 @@ const News = () => {
               zoom={15}
               style={{ borderRadius: "10px", height: "600px", flex: "3" }}
               dataSource={activeGroupMarker}
-              db={1}
             />
             <div className={sideClassName}>
               <Rightbar name={"News Summary"} openDetail={handleOpenDetail} />
