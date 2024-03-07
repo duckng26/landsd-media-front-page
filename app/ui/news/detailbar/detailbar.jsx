@@ -33,10 +33,10 @@ const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
       ) : status === "error" ? (
         <span>Error: {error.message}</span>
       ) : (
-        sourceList.map((src, key) => (
+        sourceList.map((src, index) => (
           <div
             className={styles.item}
-            key={key}
+            key={index}
             onClick={() => selectGroup(src.geo_tags)}
           >
             <div className={styles.text}>
@@ -49,8 +49,8 @@ const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
                 <span className={styles.addBtn} onClick={() => {}}>
                   +
                 </span>
-                {Object.values(src.geo_tags).map(({ location }) => (
-                  <div className={styles.nuggetLocation}>
+                {Object.values(src.geo_tags).map(({ location, index }) => (
+                  <div className={styles.nuggetLocation} key={index}>
                     {location}
                     <span className={styles.removeBtn} onClick={() => {}}>
                       +

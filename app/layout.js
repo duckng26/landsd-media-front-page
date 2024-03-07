@@ -15,13 +15,12 @@ const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
+      {/* <head>
         <meta
           http-equiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
-      </head>
-
+      </head> */}
       <QueryClientProvider client={queryClient}>
         <body className={inter.className}>{children}</body>
       </QueryClientProvider>

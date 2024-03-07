@@ -7,22 +7,23 @@ import { useState } from "react";
 import { fetchNewsData } from "../../../lib/clientActions";
 //TODO: update active item along with event open detail
 
-const Rightbar = ({ name, openDetail }) => {
+const Rightbar = ({ name, openDetail, onSelect, activeItem }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("");
 
   const { status, data, isLoading, error } = useQuery({
     queryKey: ["news"],
     queryFn: fetchNewsData,
   });
 
-  const { dct_GrpST_Src_GeoTag } = data?.data;
+  const listNews = Object.values(data?.data["dct_GrpST_Src_GeoTag"]);
 
-  const handleItemClick = (activeItem) => {
-    setActiveItem(activeItem);
-    openDetail(activeItem);
+  const handleItemClick = (nextItem) => {
+    if (activeItem == nextItem) {
+      openDetail("");
+      return;
+    }
+    openDetail(nextItem);
   };
-
 
   return (
     <div className={styles.container}>
@@ -30,33 +31,36 @@ const Rightbar = ({ name, openDetail }) => {
         <Indicator handleToggle={setIsOpen} isOpen={isOpen} />
         <h3 className={styles.indicatorTitle}>{name}</h3>
       </div>
-      {isOpen && (
-        <>
-          {status === "pending" ? (
-            "Loading..."
-          ) : status === "error" ? (
-            <span>Error: {error.message}</span>
-          ) : (
-            <div
-              className={activeItem ? styles.itemActive : styles.item}
-              onClick={() => handleItemClick('dcc37b57552a4f879b7c6e62ec87cfdc')}
-            >
-              <div className={styles.bgContainer}></div>
-              <div className={styles.text}>
-                <h3 className={styles.title}>
-                  {dct_GrpST_Src_GeoTag?.dcc37b57552a4f879b7c6e62ec87cfdc?.id}
-                </h3>
-                <span className={styles.subtitle}>
-                  {new Date(Date.now()).toUTCString()}
-                </span>
-                <p className={styles.desc}>
-                  {dct_GrpST_Src_GeoTag.dcc37b57552a4f879b7c6e62ec87cfdc.summary_abstractive}
-                </p>
-              </div>
+      {isOpen &&
+        listNews.map((item) => {
+          return (
+            <div key={item.id}  onClick={() => onSelect(item.geo_tag)}>
+              {status === "pending" ? (
+                "Loading..."
+              ) : status === "error" ? (
+                <span>Error: {error.message}</span>
+              ) : (
+                <div
+                  className={
+                    activeItem == item.id ? styles.itemActive : styles.item
+                  }
+                  onClick={() => handleItemClick(item.id)}
+                >
+                  <div className={styles.bgContainer}></div>
+                  <div className={styles.text}>
+                    <h3 className={styles.title}>{item.id}</h3>
+                    <span className={styles.subtitle}>
+                      {new Date(Date.now()).toUTCString()}
+                    </span>
+                    <p className={styles.desc}>
+                      {item["summary_extractive"]?.[0]}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </>
-      )}
+          );
+        })}
     </div>
   );
 };

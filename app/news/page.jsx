@@ -15,9 +15,9 @@ import { fetchNewsData } from "../lib/clientActions";
 const DEFAULT_CENTER = [22.349, 114.136];
 
 const News = () => {
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [activeDetail, setActiveDetail] = useState("");
   const [activeGroupMarker, setActiveGroupMarker] = useState([]);
+  const [isMapExpand, setIsMapExpand] = useState(true);
 
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -27,15 +27,18 @@ const News = () => {
     queryFn: fetchNewsData,
   });
 
-  const sideClassName = isDetailOpen ? styles.twoSide : styles.side;
+  const sideClassName = activeDetail != "" ? styles.twoSide : styles.side;
 
   const handleOpenDetail = (id) => {
     setActiveDetail(id);
-    setIsDetailOpen(!isDetailOpen);
   };
 
   const handleSelectGroup = (group) => {
     setActiveGroupMarker(group);
+  };
+
+  const handleToggleMapSize = () => {
+    setIsMapExpand(!isMapExpand);
   };
 
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
@@ -88,18 +91,26 @@ const News = () => {
               className={styles.homeMap}
               center={DEFAULT_CENTER}
               zoom={15}
+              isMapExpand={isMapExpand}
+              toggleMapSize={handleToggleMapSize}
               style={{ borderRadius: "10px", height: "600px", flex: "3" }}
               dataSource={activeGroupMarker}
-              db={1}
             />
-            <div className={sideClassName}>
-              <Rightbar name={"News Summary"} openDetail={handleOpenDetail} />
-            </div>
-            {isDetailOpen && (
+            {!isMapExpand && (
+              <div className={sideClassName}>
+                <Rightbar
+                  name={"News Summary"}
+                  activeItem={activeDetail}
+                  openDetail={handleOpenDetail}
+                  onSelect={handleSelectGroup}
+                />
+              </div>
+            )}
+            {activeDetail != "" && !isMapExpand && (
               <div className={sideClassName}>
                 <Detailbar
                   name={"Details"}
-                  closeDetail={handleOpenDetail}
+                  closeDetail={() => handleOpenDetail("")}
                   id={activeDetail}
                   selectGroup={handleSelectGroup}
                 />
