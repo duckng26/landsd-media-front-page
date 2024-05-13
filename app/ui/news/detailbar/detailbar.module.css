@@ -157,3 +157,20 @@
   background-color: #fff;
   cursor: pointer;
 }
+
+.sourceList {
+  width: 100%;
+  max-height: 454px; /* Adjust the max-height as needed */
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.itemActive{
+  background: #ecfbef;
+  transition: all 0.2s;
+  padding: 20px 24px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  cursor: pointer;
+}

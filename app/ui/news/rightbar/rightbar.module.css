@@ -95,3 +95,9 @@
 .indicatorTitle {
   color: #717171;
 }
+
+.listNews {
+  width: 100%;
+  max-height: 530px; /* Adjust the max-height as needed */
+  overflow-y: auto;
+}

@@ -1,3 +1,4 @@
+import {useState} from 'react'
 import { useQuery } from "@tanstack/react-query";
 import styles from "./detailbar.module.css";
 import Map from "../map/Map";
@@ -7,15 +8,22 @@ import { fetchNewsData } from "../../../lib/clientActions";
 const DEFAULT_CENTER = [22.349, 114.136];
 let apikey = "28ba7bd74cbe4af890d90991f9d5a86e"; // key for text analytic platform
 
-const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
+const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
+  const [activeItem, setActiveItem] = useState("");
+
   const { status, data, isLoading, error } = useQuery({
-    queryKey: ["news"],
-    queryFn: fetchNewsData,
+    queryKey: ["news", qs],
+    enabled: false,
   });
 
   const sourceList = Object.entries(
-    data?.data.dct_GrpST_Src_GeoTag[id].sources
+    data?.data.dct_GrpST_Src_GeoTag[id]?.sources || {}
   ).map(([key, value]) => value);
+
+  const handleItemClick = (src) => {
+    setActiveItem(src.id)
+    selectGroup(src.geo_tags)
+  };
 
   return (
     <div className={styles.container}>
@@ -28,6 +36,8 @@ const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
       <div className={styles.topicHeader}>
         <h5 className={styles.indicatorTitle}>Grouping</h5>
       </div>
+      <div className={styles.sourceList}>
+
       {status === "pending" ? (
         "Loading..."
       ) : status === "error" ? (
@@ -35,14 +45,16 @@ const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
       ) : (
         sourceList.map((src, index) => (
           <div
-            className={styles.item}
             key={index}
-            onClick={() => selectGroup(src.geo_tags)}
+            className={
+              activeItem == src.id ? styles.itemActive : styles.item
+            }
+            onClick={() => handleItemClick(src)}
           >
             <div className={styles.text}>
               <span className={styles.link}>
                 <span className={styles.square}></span>
-                <a href="/">{src.title}</a>
+                <a>{src.title}</a>
               </span>
               <p className={styles.desc}>{src.content}</p>
               <div className={styles.nuggetsList}>
@@ -62,6 +74,7 @@ const Detailbar = ({ name, closeDetail, selectGroup, id }) => {
           </div>
         ))
       )}
+      </div>
       <div className={styles.topicHeader}>
         <h5 className={styles.indicatorTitle}>Related Hot Keywords</h5>
       </div>

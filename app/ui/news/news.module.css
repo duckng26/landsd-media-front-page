@@ -75,6 +75,7 @@
 }
 
 .inputFilter {
+  flex: 1;
   background-color: #f1f1f1;
   border-radius: 10px;
   height: 30px;
@@ -86,11 +87,39 @@
 }
 
 .inputContainter {
+  flex: 1 0 21%;
   display: flex;
   color: var(--textSoft);
   flex-direction: column;
 }
 
+.inputWrapper {
+  position: relative;
+  display: flex;
+}
+
 .react-datepicker__close-icon::after {
   color: red;
+}
+
+.clearButton {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background-color: #00b19f; 
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.clearButton::after {
+  content: "+"; 
+  font-size: 16px;
+  transform: rotate(135deg);
+  color: white;
 }
