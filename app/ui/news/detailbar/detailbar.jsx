@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import styles from "./detailbar.module.css";
 import Map from "../map/Map";
@@ -20,9 +20,12 @@ const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
     data?.data.dct_GrpST_Src_GeoTag[id]?.sources || {}
   ).map(([key, value]) => value);
 
+  const trendingKeywords =
+    data?.data.dct_GrpST_Src_GeoTag[id]["keywords_trending"] || [];
+
   const handleItemClick = (src) => {
-    setActiveItem(src.id)
-    selectGroup(src.geo_tags)
+    setActiveItem(src.id);
+    selectGroup(src.geo_tags);
   };
 
   return (
@@ -37,51 +40,59 @@ const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
         <h5 className={styles.indicatorTitle}>Grouping</h5>
       </div>
       <div className={styles.sourceList}>
-
-      {status === "pending" ? (
-        "Loading..."
-      ) : status === "error" ? (
-        <span>Error: {error.message}</span>
-      ) : (
-        sourceList.map((src, index) => (
-          <div
-            key={index}
-            className={
-              activeItem == src.id ? styles.itemActive : styles.item
-            }
-            onClick={() => handleItemClick(src)}
-          >
-            <div className={styles.text}>
-              <span className={styles.link}>
-                <span className={styles.square}></span>
-                <a>{src.title}</a>
-              </span>
-              <p className={styles.desc}>{src.content}</p>
-              <div className={styles.nuggetsList}>
-                <span className={styles.addBtn} onClick={() => {}}>
-                  +
+        {status === "pending" ? (
+          "Loading..."
+        ) : status === "error" ? (
+          <span>Error: {error.message}</span>
+        ) : (
+          sourceList.map((src, index) => (
+            <div
+              key={index}
+              className={activeItem == src.id ? styles.itemActive : styles.item}
+              onClick={() => handleItemClick(src)}
+            >
+              <div className={styles.text}>
+                <span className={styles.link}>
+                  <span className={styles.square}></span>
+                  <a>{src.title}</a>
                 </span>
-                {Object.values(src.geo_tags).map(({ location, index }) => (
-                  <div className={styles.nuggetLocation} key={index}>
-                    {location}
-                    <span className={styles.removeBtn} onClick={() => {}}>
-                      +
-                    </span>
-                  </div>
-                ))}
+                <p className={styles.desc}>{src.content}</p>
+                <div className={styles.nuggetsList}>
+                  <span className={styles.addBtn} onClick={() => {}}>
+                    +
+                  </span>
+                  {Object.values(src.geo_tags).map(({ location, index }) => (
+                    <div className={styles.nuggetLocation} key={index}>
+                      {location}
+                      <span className={styles.removeBtn} onClick={() => {}}>
+                        +
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ))
-      )}
+          ))
+        )}
       </div>
       <div className={styles.topicHeader}>
-        <h5 className={styles.indicatorTitle}>Related Hot Keywords</h5>
+        <h4 className={styles.indicatorTitle}>Related Hot Keywords</h4>
       </div>
-      <div className={styles.nuggetsList}>
-        <div className={styles.nugget}>Real</div>
-        <div className={styles.nugget}>Lands</div>
-      </div>
+      {trendingKeywords?.map((grp) => (
+        <>
+          <h5 className={styles.topicTitle}>
+            {grp?.topic} ({grp?.event})
+          </h5>
+          <div className={styles.nuggetsList}>
+            {grp?.["keyword_chinese"].map((keyword) => (
+              <div className={styles.nugget}>{keyword}</div>
+            ))}
+            {grp?.["keyword_english"].map((keyword) => (
+              <div className={styles.nugget}>{keyword}</div>
+            ))}
+          </div>
+        </>
+      ))}
       {/* <Map
         className={styles.homeMap}
         center={DEFAULT_CENTER}

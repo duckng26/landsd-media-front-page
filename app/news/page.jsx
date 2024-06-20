@@ -12,6 +12,7 @@ import { Filter } from "../ui/news/filter/filter";
 import Detailbar from "../ui/news/detailbar/detailbar";
 import { fetchNewsData } from "../lib/clientActions";
 import { CustomInput } from "../ui/news/custominput/custominput";
+import { mock } from "./mock";
 
 const DEFAULT_CENTER = [22.349, 114.136];
 
@@ -77,7 +78,8 @@ const News = () => {
 
   const { status, data, isLoading, error } = useQuery({
     queryKey: ["news", queryString],
-    queryFn: () => fetchNewsData(queryString),
+    queryFn: () => mock,
+    // queryFn: () => fetchNewsData(queryString),
   });
 
   const sideClassName = activeDetail != "" ? styles.twoSide : styles.side;

@@ -91,6 +91,10 @@
   margin-bottom: 10px;
 }
 
+.topicTitle {
+  color: #717171;
+}
+
 .square { 
   width: 12px;
   height: 12px;
