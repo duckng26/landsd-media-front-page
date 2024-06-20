@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import styles from "./detailbar.module.css";
 import Map from "../map/Map";
 import { MockDataPoint } from "../../../data/sample_data";
@@ -11,17 +11,15 @@ let apikey = "28ba7bd74cbe4af890d90991f9d5a86e"; // key for text analytic platfo
 const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
   const [activeItem, setActiveItem] = useState("");
 
-  const { status, data, isLoading, error } = useQuery({
-    queryKey: ["news", qs],
-    enabled: false,
-  });
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData(['news', qs])
 
   const sourceList = Object.entries(
     data?.data.dct_GrpST_Src_GeoTag[id]?.sources || {}
   ).map(([key, value]) => value);
 
   const trendingKeywords =
-    data?.data.dct_GrpST_Src_GeoTag[id]["keywords_trending"] || [];
+    data?.data.dct_GrpST_Src_GeoTag[id]?.["keywords_trending"] || [];
 
   const handleItemClick = (src) => {
     setActiveItem(src.id);
@@ -36,9 +34,9 @@ const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
           +
         </span>
       </div>
-      <div className={styles.topicHeader}>
+      {!!sourceList.length && <div className={styles.topicHeader}>
         <h5 className={styles.indicatorTitle}>Grouping</h5>
-      </div>
+      </div>}
       <div className={styles.sourceList}>
         {status === "pending" ? (
           "Loading..."
@@ -75,9 +73,9 @@ const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
           ))
         )}
       </div>
-      <div className={styles.topicHeader}>
+      {!!trendingKeywords.length && <div className={styles.topicHeader} >
         <h4 className={styles.indicatorTitle}>Related Hot Keywords</h4>
-      </div>
+      </div>}
       {trendingKeywords?.map((grp) => (
         <>
           <h5 className={styles.topicTitle}>

@@ -12,19 +12,10 @@ import { Filter } from "../ui/news/filter/filter";
 import Detailbar from "../ui/news/detailbar/detailbar";
 import { fetchNewsData } from "../lib/clientActions";
 import { CustomInput } from "../ui/news/custominput/custominput";
+import { debounce } from "../lib/utils";
 import { mock } from "./mock";
 
 const DEFAULT_CENTER = [22.349, 114.136];
-
-function debounce(func, delay) {
-  let timer;
-  return (...args) => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      func(...args);
-    }, delay);
-  };
-}
 
 const News = () => {
   const [activeDetail, setActiveDetail] = useState("");
@@ -78,8 +69,7 @@ const News = () => {
 
   const { status, data, isLoading, error } = useQuery({
     queryKey: ["news", queryString],
-    queryFn: () => mock,
-    // queryFn: () => fetchNewsData(queryString),
+    queryFn: () => fetchNewsData(queryString),
   });
 
   const sideClassName = activeDetail != "" ? styles.twoSide : styles.side;
@@ -89,6 +79,7 @@ const News = () => {
   };
 
   const handleSelectGroup = (group) => {
+    console.log(group)
     setActiveGroupMarker(group);
   };
 
