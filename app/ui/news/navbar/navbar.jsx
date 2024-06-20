@@ -1,16 +1,26 @@
 "use client";
+import { useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import styles from "./navbar.module.css";
+import { useFreeTextNewsSearch } from "../../../hooks/useNews";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import {
   MdNotifications,
   MdOutlineChat,
   MdPublic,
   MdSearch,
 } from "react-icons/md";
+import { debounce } from "@/app/lib/utils";
+
+const DEBOUNCE_DELAY = 500;
 
 const Navbar = () => {
   const pathname = usePathname();
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchNews = useFreeTextNewsSearch(searchQuery);
+  const queryClient = useQueryClient();
+
   const user = {
     username: "duke",
     email: "",
@@ -21,6 +31,23 @@ const Navbar = () => {
     phone: "",
     address: "",
   };
+  
+  const handleSearch = async (query) => {
+    if (query) {
+      await searchNews.mutateAsync(query);
+    } else {
+      queryClient.invalidateQueries({ queryKey: ['news'] });
+    }
+  };
+
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, DEBOUNCE_DELAY), []);
+
+
+  const handleInputChange = async (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    debouncedHandleSearch(query);
+  };
 
   return (
     <div className={styles.container}>
@@ -28,7 +55,13 @@ const Navbar = () => {
         <div className={styles.title}>{pathname.split("/").pop()}</div>
         <div className={styles.search}>
           <MdSearch />
-          <input type="text" placeholder="Search..." className={styles.input} />
+          <input
+            type="text"
+            placeholder="Search..."
+            className={styles.input}
+            value={searchQuery}
+            onChange={handleInputChange}
+          />
         </div>
       </div>
       <div className={styles.user}>

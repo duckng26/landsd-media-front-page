@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./rightbar.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MdPlayCircleFilled, MdReadMore } from "react-icons/md";
 import { Indicator } from "../indicator/indicator";
 import { useState } from "react";
@@ -8,14 +8,10 @@ import { fetchNewsData } from "../../../lib/clientActions";
 //TODO: update active item along with event open detail
 
 const Rightbar = ({ name, openDetail, onSelect, activeItem, qs }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
-  const { status, data, isLoading, error } = useQuery({
-    queryKey: ["news", qs],
-    enabled: false,
-  });
-
-  console.log(data)
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData(['news', qs])
 
   const listNews = Object.values(data?.data["dct_GrpST_Src_GeoTag"] || {});
 

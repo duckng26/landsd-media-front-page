@@ -10,26 +10,19 @@ import Map from "../ui/news/map/Map";
 import { Tabs } from "../ui/news/tabs/tabs";
 import { Filter } from "../ui/news/filter/filter";
 import Detailbar from "../ui/news/detailbar/detailbar";
-import { fetchNewsData } from "../lib/clientActions";
+import { fetchNewsData, fetchProfiles } from "../lib/clientActions";
 import { CustomInput } from "../ui/news/custominput/custominput";
+import { debounce } from "../lib/utils";
 import { mock } from "./mock";
+import { set } from "react-hook-form";
 
 const DEFAULT_CENTER = [22.349, 114.136];
 
-function debounce(func, delay) {
-  let timer;
-  return (...args) => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      func(...args);
-    }, delay);
-  };
-}
-
 const News = () => {
   const [activeDetail, setActiveDetail] = useState("");
+  const [activeProfile, setActiveProfile] = useState(0);
   const [activeGroupMarker, setActiveGroupMarker] = useState([]);
-  const [isMapExpand, setIsMapExpand] = useState(true);
+  const [isMapExpand, setIsMapExpand] = useState(false);
 
   const [topic, setTopic] = useState("");
   const [event, setEvent] = useState("");
@@ -49,6 +42,11 @@ const News = () => {
     debounce((query) => setQueryString(query), 500),
     []
   );
+
+  const { data: profiles } = useQuery({
+    queryKey: ["profiles"],
+    queryFn: () => fetchProfiles(),
+  });
 
   useEffect(() => {
     let query = new URLSearchParams();
@@ -74,12 +72,36 @@ const News = () => {
     yearEnd,
     weekStart,
     weekEnd,
+    activeProfile
   ]);
+
+  useEffect(() => {
+    const {
+      topic = "",
+      event = "",
+      keyword_chinese = "",
+      keyword_english = "",
+      location = "",
+      year_start = "",
+      year_end = "",
+      week_start = "",
+      week_end = "",
+    } = profiles?.[activeProfile] || {};
+
+    setTopic(topic || "");
+    setEvent(event || "");
+    setKeywordChinese(keyword_chinese || "");
+    setKeywordEnglish(keyword_english || "");
+    setLocation(location|| "");
+    setYearStart(year_start|| "");
+    setYearEnd(year_end|| "");
+    setWeekStart(week_start|| "");
+    setWeekEnd(week_end|| "");
+  }, [activeProfile]);
 
   const { status, data, isLoading, error } = useQuery({
     queryKey: ["news", queryString],
-    queryFn: () => mock,
-    // queryFn: () => fetchNewsData(queryString),
+    queryFn: () => fetchNewsData(queryString),
   });
 
   const sideClassName = activeDetail != "" ? styles.twoSide : styles.side;
@@ -162,13 +184,21 @@ const News = () => {
           <CustomInput type="text" value={location} onChange={setLocation} />
         </div>
       </Filter>
+      {profiles?.length ? (
+        <Tabs
+          profiles={profiles}
+          activeProfile={activeProfile}
+          setActiveProfile={setActiveProfile}
+        />
+      ) : (
+        <p>Loading profiles...</p>
+      )}
       {status === "pending" ? (
-        "Loading..."
+        <p>Loading map...</p>
       ) : status === "error" ? (
         <span>Error: {error.message}</span>
       ) : (
         <>
-          <Tabs />
           <div className={styles.main}>
             <Map
               className={styles.homeMap}

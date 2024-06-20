@@ -1,14 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import styles from "./tabs.module.css";
+
 const activeTabContext = createContext({});
 
-const labels = ["Default", "Profile 1", "Profile 2", "Profile 3"];
 const INITIAL_TAB = 0;
-export const Tabs = () => {
-  const [active, setActive] = useState(INITIAL_TAB);
+export const Tabs = ({ profiles, activeProfile, setActiveProfile }) => {
+
+  const labels = profiles
+    ? profiles?.map((profile) => profile.name)
+    : ["Default"];
 
   return (
-    <activeTabContext.Provider value={{ active, setActive }}>
+    <activeTabContext.Provider value={{ activeProfile, setActiveProfile }}>
       <div className={styles.row_flex}>
         {labels.map((label, i) => (
           <Tab key={i} label={label} i={i} />
@@ -19,17 +22,17 @@ export const Tabs = () => {
 };
 
 const Tab = ({ label, i }) => {
-  const { active, setActive } = useContext(activeTabContext);
+  const { activeProfile, setActiveProfile } = useContext(activeTabContext);
 
   return (
     <div className={styles.tab}>
       <div
         className={styles.tab_name}
         style={{
-          color: active === i ?  "#00b19f": "#ccc",
+          color: activeProfile === i ? "#00b19f" : "#ccc",
         }}
         onClick={() => {
-          setActive(i);
+          setActiveProfile(i);
         }}
       >
         {label}
@@ -39,10 +42,10 @@ const Tab = ({ label, i }) => {
         style={{
           borderBottomStyle: "solid",
           borderBottomColor: "#00b19f",
-          borderBottomWidth: active === i ? "2px" : "0px",
-          left: active === i ? "0" : "-100px",
+          borderBottomWidth: activeProfile === i ? "2px" : "0px",
+          left: activeProfile === i ? "0" : "-100px",
           transition: "left 1s ease",
-          bottom: '-2px'
+          bottom: "-2px",
         }}
       ></div>
     </div>
