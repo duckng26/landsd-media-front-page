@@ -1,0 +1,80 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    display: flex;
+    justify-content: flex-start;
+    gap: 40px;
+    flex-direction: column;
+    width: 60%;
+    height: 70%;
+    background-color: white;
+    border-radius: 20px;
+    position: relative;
+    padding: 25px;
+}
+
+.cancel {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    cursor: pointer;
+}
+
+.fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 15px;
+    row-gap: 20px;
+}
+
+.field {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.field > input {
+    height: 30px;
+    font-size: 15px;
+}
+
+.fieldsContainer {
+    height: 100%;
+}
+
+.buttonContainer {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    gap: 15px;
+    height: min-content;
+}
+
+.buttonContainer > button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancelButton {
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--textSoft);
+}
+
+.save {
+    background-color: #00b19f;
+    border: none;
+    color: white;
+}

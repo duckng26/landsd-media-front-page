@@ -129,9 +129,6 @@ const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
       )}
       {trendingKeywords?.map((grp) => (
         <>
-          <h5 className={styles.topicTitle}>
-            {grp?.topic} ({grp?.event})
-          </h5>
           <div className={styles.nuggetsList}>
             {grp?.["keyword_chinese"].map((keyword) => (
               <div className={styles.nugget}>{keyword}</div>

@@ -1,0 +1,160 @@
+.container {
+    display: grid;
+    grid-template-rows: 7fr 1fr;
+    height: 60vh;
+    padding: 15px;
+    background-color: white;
+    width: 100%;
+    border-radius: 15px;
+    gap: 20px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    position: relative;
+    width: max-content;
+}
+
+.addButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    border: none;
+    background-color: #00b19f;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.popupContainer {
+    position: absolute;
+    bottom: calc(100% + 15px);
+}
+
+.dropdown {
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.popup {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    gap: 10px;
+    font-size: 15px;
+}
+
+.selectContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.selectContainer > label {
+    color: var(--textSoft);
+}
+
+.popupConfirmButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    border: none;
+    background-color: #00b19f;
+    color: white;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.keywordContainer {
+    overflow: auto;
+    border-radius: 15px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.keywordInner {
+    display: flex;
+    flex-direction: row;
+    column-gap: 40px;
+    row-gap: 20px;
+    overflow: auto;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: min-content;
+    overflow: auto;
+}
+
+.nuggy {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: max-content;
+    gap: 10px;
+    position: relative;
+}
+
+.nuggyKw {
+    border: 1px solid #00b19f;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #307269;
+    background-color: #e6f6f4;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #00b19f;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    background-color: #e6f6f4;
+    cursor: pointer;
+}
+
+.ttContainer {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 40px;
+    z-index: 10;
+}
+
+.tt {
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    gap: 5px;
+    width: 200px;
+    flex-wrap: wrap;
+    box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.location {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--textSoft);
+    width: max-content;
+    border-radius: 5px;
+}

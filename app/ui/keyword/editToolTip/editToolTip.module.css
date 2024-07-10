@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: white;
+    align-items: flex-start;
+    top: 20px;
+    height: max-content;
+    right: 0;
+    z-index: 5;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.option {
+    padding: 10px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    color: var(--textSoft);
+    gap: 5px;
+    cursor: pointer;
+}
+
+.delete {
+    padding: 10px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    color: red;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.option:hover,
+.delete:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,17 @@
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.headerOption {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--textSoft);
+    padding: 10px 15px;
+    border-bottom: 2px solid var(--textSoft);
+}
+
+.subpageContainer {
+    padding-top: 20px;
+}

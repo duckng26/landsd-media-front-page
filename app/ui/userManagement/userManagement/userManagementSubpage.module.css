@@ -1,0 +1,36 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.addButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00b19f;
+    padding: 12px 15px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.exportButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #00b19f;
+    padding: 12px 15px;
+    color: #00b19f;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 20px;
+}

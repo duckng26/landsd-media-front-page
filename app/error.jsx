@@ -1,9 +1,9 @@
-"use client"
-const Error = () => {
-  return (
-    //The error layout
-    <div>Error</div>
-  )
-}
+"use client";
+const Error = (status_code) => {
+    return (
+        //The error layout
+        <div>Error: {status_code}</div>
+    );
+};
 
-export default Error
+export default Error;
