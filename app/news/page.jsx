@@ -8,6 +8,7 @@ import styles from "../ui/news/news.module.css";
 import Rightbar from "../ui/news/rightbar/rightbar";
 import Map from "../ui/news/map/Map";
 import { Tabs } from "../ui/news/tabs/tabs";
+import { Select } from "../ui/news/select/select";
 import { Filter } from "../ui/news/filter/filter";
 import Detailbar from "../ui/news/detailbar/detailbar";
 import { fetchNewsData, fetchProfiles } from "../lib/clientActions";
@@ -18,7 +19,11 @@ import { mock } from "./mock";
 import { set } from "react-hook-form";
 
 const DEFAULT_CENTER = [22.349, 114.136];
-
+const dateShortcutOptions = [
+  { label: 'Last Week', value: 'last_week' },
+  { label: 'Last 2 Weeks', value: 'last_2_weeks' },
+  { label: 'Last Month', value: 'last_month' },
+];
 const News = () => {
   const [activeDetail, setActiveDetail] = useState("");
   const [activeProfile, setActiveProfile] = useState(0);
@@ -33,6 +38,7 @@ const News = () => {
   const [location, setLocation] = useState("");
   const [dateStart, setDateStart] = useState("");
   const [dateEnd, setDateEnd] = useState("");
+  const [dateShortcut, setDateShortcut] = useState("");
   const [queryString, setQueryString] = useState("");
 
   const debouncedSetQueryString = useCallback(
@@ -56,6 +62,7 @@ const News = () => {
     const formattedDate = (date) =>  `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
     if (dateStart) query.append("date_start", formattedDate(dateStart));
     if (dateEnd) query.append("date_end", formattedDate(dateEnd));
+    if (dateShortcut) query.append("date_shortcut", dateShortcut);
 
     debouncedSetQueryString(query.toString());
   }, [
@@ -67,6 +74,7 @@ const News = () => {
     dateStart,
     dateEnd,
     activeProfile,
+    dateShortcut
   ]);
 
   useEffect(() => {
@@ -78,6 +86,7 @@ const News = () => {
       location = "",
       date_start = "",
       date_end = "",
+      date_shortcut = ""
     } = profiles?.[activeProfile] || {};
 
     setTopic(topic || "");
@@ -87,6 +96,7 @@ const News = () => {
     setLocation(location || "");
     setDateStart(date_start || "");
     setDateEnd(date_end || "");
+    setDateShortcut(date_shortcut || "");
   }, [activeProfile]);
 
   const { status, data, isLoading, error } = useQuery({
@@ -203,6 +213,10 @@ const News = () => {
                 }
               />
             </div>
+          </div>
+          <div className={styles.inputContainer}>
+            <label>Date Shortcut</label>
+            <Select val={dateShortcut} setVal={setDateShortcut} options={dateShortcutOptions}></Select>
           </div>
           <div className={styles.inputContainer}>
             <label>Topic</label>
