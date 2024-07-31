@@ -42,6 +42,11 @@ let menuItems = [
                 path: "/auditLogs",
                 icon: <MdDashboard />,
             },
+            {
+                title: "Profile",
+                path: "/profile",
+                icon: <MdDashboard />,
+            },
         ],
     },
     {

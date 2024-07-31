@@ -1,0 +1,31 @@
+.container {
+    width: 100%;
+    min-height: 60vh;
+    height: auto;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f6f7fb;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 15px;
+    gap: 10px;
+    background-color: white;
+    border-radius: 15px;
+    max-width: 80%;
+    min-width: 50%;
+    box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.1);
+}
+.addButton {
+    background-color: #f6f7fb;
+    color: #00a38d;
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}

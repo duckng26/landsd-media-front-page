@@ -1,0 +1,20 @@
+.container {
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+    gap: 10px;
+    height: max-content;
+    color: #8b8d97;
+}
+
+.name {
+    padding: 10px 15px;
+    background-color: #f6f7fb;
+    border-radius: 5px;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}

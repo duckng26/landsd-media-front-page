@@ -736,92 +736,166 @@ export const updateUser = async (body) => {
     }
 };
 
-
 // NEWS DATA
 export const fetchNewsData = async (qs = "", isFreeText) => {
-  const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + 'news/GrpST_Src_GeoTag';
-  const url = `${baseURL}?${
-    `is_free_text=` + !!isFreeText + (isFreeText ? (`&query=` + isFreeText) : '') + `&`
-  }${decodeURIComponent(qs)}`;
-  const token = getCookie("token");
-  const headers = { Authorization: `Bearer ${token}` };
+    const baseURL =
+        process.env.NEXT_PUBLIC_API_ROOT_URL + "news/GrpST_Src_GeoTag";
+    const url = `${baseURL}?${
+        `is_free_text=` +
+        !!isFreeText +
+        (isFreeText ? `&query=` + isFreeText : "") +
+        `&`
+    }${decodeURIComponent(qs)}`;
+    const token = getCookie("token");
+    const headers = { Authorization: `Bearer ${token}` };
 
-  try {
-    const response = await fetch(url, {
-      headers,
-    });
-    if (!response.ok) {
-      throw new Error("Failed to fetch news data");
+    try {
+        const response = await fetch(url, {
+            headers,
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch news data");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching news data:", error.message);
+        throw error;
     }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching news data:", error.message);
-    throw error;
-  }
 };
 
 export async function updateNewsLocation(
-  id_source,
-  lst_id_geo_tag_remain,
-  lst_loc_new
+    id_source,
+    lst_id_geo_tag_remain,
+    lst_loc_new
 ) {
-  const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + 'news/location/';
-  const endpoint = "location";
-  const token = getCookie("token");
+    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "news/location/";
+    const endpoint = "location";
+    const token = getCookie("token");
 
-  const params = new URLSearchParams();
-  if (id_source) params.append("id_source", id_source.toString());
-  // if (collectionName) params.append('collection_name', collectionName);
-  // if (limit) params.append('limit', limit);
+    const params = new URLSearchParams();
+    if (id_source) params.append("id_source", id_source.toString());
+    // if (collectionName) params.append('collection_name', collectionName);
+    // if (limit) params.append('limit', limit);
 
-  const qs = params.toString();
-  const requestBody = {
-    lst_id_geo_tag_remain: lst_id_geo_tag_remain,
-    lst_loc_new: lst_loc_new,
-  };
+    const qs = params.toString();
+    const requestBody = {
+        lst_id_geo_tag_remain: lst_id_geo_tag_remain,
+        lst_loc_new: lst_loc_new,
+    };
 
-  const url = `${baseURL}${endpoint}?${qs}`;
+    const url = `${baseURL}${endpoint}?${qs}`;
 
-  try {
-    const response = await fetch(url, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}` 
-      },
-      body: JSON.stringify(requestBody),
-    });
+    try {
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(requestBody),
+        });
 
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Update successful:", data);
+    } catch (error) {
+        console.error("Error updating news location:", error);
     }
-
-    const data = await response.json();
-    console.log("Update successful:", data);
-  } catch (error) {
-    console.error("Error updating news location:", error);
-  }
 }
 
 //PROFILES
 export const fetchProfiles = async () => {
-  const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + 'profile';
-  const url = `${baseURL}`;
-  const token = getCookie("token");
-  const headers = { Authorization: `Bearer ${token}` };
+    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "profile";
+    const url = `${baseURL}`;
+    const token = getCookie("token");
+    const headers = { Authorization: `Bearer ${token}` };
+    const method = "GET";
 
-  try {
-    const response = await fetch(url, {
-      headers,
-    });
-    if (!response.ok) {
-      throw new Error("Failed to fetch profiles");
+    try {
+        const response = await fetch(url, {
+            headers,
+            method,
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch profiles");
+        }
+        const data = await response.json();
+        return data.data.lst_profile;
+    } catch (error) {
+        console.error("Error fetching profiles data:", error.message);
+        throw error;
     }
-    const data = await response.json();
-    return data.data.lst_profile;
-  } catch (error) {
-    console.error("Error fetching profiles data:", error.message);
-    throw error;
-  }
+};
+
+export const deleteProfile = async (qs = "") => {
+    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "profile";
+    const url = `${baseURL}?${qs}`;
+    const token = getCookie("token");
+    const headers = { Authorization: `Bearer ${token}` };
+    const method = "DELETE";
+
+    try {
+        const response = await fetch(url, {
+            headers,
+            method,
+        });
+        if (!response.ok) {
+            throw new Error("Failed to delete profiles");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error deleting profiles data:", error.message);
+        throw error;
+    }
+};
+
+export const editProfile = async (qs = "") => {
+    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "profile";
+    const url = `${baseURL}?${qs}`;
+    const token = getCookie("token");
+    const headers = { Authorization: `Bearer ${token}` };
+    const method = "PATCH";
+
+    try {
+        const response = await fetch(url, {
+            headers,
+            method,
+        });
+        if (!response.ok) {
+            throw new Error("Failed to edit profiles");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error editing profiles data:", error.message);
+        throw error;
+    }
+};
+
+export const createProfile = async (qs = "") => {
+    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "profile";
+    const url = `${baseURL}?${qs}`;
+    const token = getCookie("token");
+    const headers = { Authorization: `Bearer ${token}` };
+    const method = "POST";
+
+    try {
+        const response = await fetch(url, {
+            headers,
+            method,
+        });
+        if (!response.ok) {
+            throw new Error("Failed to edit profiles");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error editing profiles data:", error.message);
+        throw error;
+    }
 };

@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from '../news.module.css';
 
-export const CustomInput = ({ value, onChange, type = 'text' }) => {
+export const CustomInput = ({ value, onChange, type = 'text', onClick }) => {
   return (
-    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }} onClick={onClick}>
       <input
         className={styles.inputFilter}
         type={type}

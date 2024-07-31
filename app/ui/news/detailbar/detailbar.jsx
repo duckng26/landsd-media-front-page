@@ -8,7 +8,7 @@ import { updateNewsLocation } from "../../../lib/clientActions";
 const DEFAULT_CENTER = [22.349, 114.136];
 let apikey = "28ba7bd74cbe4af890d90991f9d5a86e"; // key for text analytic platform
 
-const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
+const Detailbar = ({ name, closeDetail, selectGroup, id, qs, onEnglishKeywordClick, onChineseKeywordClick }) => {
   const [activeItem, setActiveItem] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [newLocation, setNewLocation] = useState({
@@ -131,10 +131,10 @@ const Detailbar = ({ name, closeDetail, selectGroup, id, qs }) => {
         <>
           <div className={styles.nuggetsList}>
             {grp?.["keyword_chinese"].map((keyword) => (
-              <div className={styles.nugget}>{keyword}</div>
+              <div onClick={() => onChineseKeywordClick(keyword)} className={styles.nugget}>{keyword}</div>
             ))}
             {grp?.["keyword_english"].map((keyword) => (
-              <div className={styles.nugget}>{keyword}</div>
+              <div onClick={() => onEnglishKeywordClick(keyword)} className={styles.nugget}>{keyword}</div>
             ))}
           </div>
         </>
