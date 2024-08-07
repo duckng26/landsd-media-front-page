@@ -12,6 +12,7 @@ import {
     fetchCoreKeywordData,
     fetchTrendingKeywordData,
     fetchSuggestedKeywordData,
+    fetchEmergingKeywordData,
     fetchTopicsData,
     fetchEventsData,
 } from "../lib/clientActions";
@@ -110,6 +111,11 @@ const Keyword = () => {
     const { data: trendingData, isLoading: isTrendingLoading } = useQuery({
         queryKey: ["trending_keywords", queryString],
         queryFn: () => fetchTrendingKeywordData(queryString),
+    });
+
+    const { data: emergingData, isLoading: isEmergingLoading } = useQuery({
+        queryKey: ["emerging_keywords", queryString],
+        queryFn: () => fetchEmergingKeywordData(queryString),
     });
 
     const { data: suggestedData, isLoading: isSuggestedLoading } = useQuery({
@@ -228,25 +234,32 @@ const Keyword = () => {
             </Filter>
             <div className={styles.main}>
                 <KeywordContainer title={"Core Keyword"}>
-                    <KeywordGroupings
-                        keywords={coreData?.core_keywords}
-                        topics={topicsData?.topics}
-                        events={eventsData?.events}
-                    />
-                </KeywordContainer>
-                <KeywordContainer title={"Trending Keyword"}>
-                    <KeywordGroupings
-                        keywords={trendingData?.trending_keywords}
-                        topics={topicsData?.topics}
-                        events={eventsData?.events}
-                    />
+                    {isCoreLoading ? (
+                        <div className={styles.loadingKeyword}>Loading...</div>
+                    ) : (
+                        <KeywordGroupings
+                            keywords={coreData?.core_keywords}
+                            idTrendingKeywords={
+                                trendingData?.id_trending_keywords
+                            }
+                            idEmergingKeywords={
+                                emergingData?.id_emerging_keywords
+                            }
+                            topics={topicsData?.topics}
+                            events={eventsData?.events}
+                        />
+                    )}
                 </KeywordContainer>
                 <KeywordContainer title={"Keyword Suggestions"}>
-                    <KeywordSuggestions
-                        keywords={suggestedData?.suggested_keywords}
-                        topics={topicsData?.topics}
-                        events={eventsData?.events}
-                    />
+                    {isSuggestedLoading ? (
+                        <div className={styles.loadingKeyword}>Loading...</div>
+                    ) : (
+                        <KeywordSuggestions
+                            keywords={suggestedData?.suggested_keywords}
+                            topics={topicsData?.topics}
+                            events={eventsData?.events}
+                        />
+                    )}
                 </KeywordContainer>
             </div>
         </div>

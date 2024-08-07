@@ -89,3 +89,12 @@
 .react-datepicker__close-icon::after {
     color: red;
 }
+
+.loadingKeyword {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    width: 100%;
+}

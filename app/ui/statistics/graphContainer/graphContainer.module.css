@@ -1,0 +1,70 @@
+.graphContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    background-color: #f1f1f1;
+    height: max-content;
+    padding: 15px;
+    margin: 5% 0;
+    border-radius: 15px;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.graphColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.graphWrapper {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 100%;
+    display: flex;
+    height: min-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.controlWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    height: min-content;
+    padding: 0 10px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.controlButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.controlButton:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.controlButton:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 1280px) {
+    .graphContainer {
+        grid-template-columns: 1fr;
+    }
+}

@@ -43,6 +43,11 @@ let menuItems = [
                 icon: <MdDashboard />,
             },
             {
+                title: "Statistics",
+                path: "/statistics",
+                icon: <MdDashboard />,
+            },
+            {
                 title: "Profile",
                 path: "/profile",
                 icon: <MdDashboard />,

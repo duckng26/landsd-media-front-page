@@ -1,0 +1,83 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+
+.wrapper {
+    width: 70%;
+    height: 50%;
+    background-color: white;
+    border-radius: 25px;
+    padding: 25px;
+    overflow-y: auto;
+}
+
+.fields {
+    display: grid;
+    grid-template-columns: 47.5% 47.5%;
+    gap: 15px 5%;
+    margin: 20px 0;
+    max-width: 100%;
+    position: relative;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.buttons > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+.cancel:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.submit {
+    background-color: #00b19f;
+    color: white;
+}
+
+.submit:hover {
+    background-color: rgba(3, 109, 99, 0.596);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 10px;
+    position: relative;
+}
+
+.field > label {
+    font-size: 15px;
+}
+
+.field > input,
+.field > select {
+    position: relative;
+    font-size: 15px;
+    padding: 5px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    max-width: 100%;
+}

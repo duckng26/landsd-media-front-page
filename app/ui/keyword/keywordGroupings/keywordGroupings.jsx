@@ -19,7 +19,11 @@ import {
     updateTopics,
     deleteEvent,
     updateEvents,
+    fetchTrendingKeywordData,
+    fetchEmergingKeywordData,
+    updateKeyword,
 } from "@/app/lib/clientActions";
+import EditKeywordPopup from "../editKeywordPopup/editKeywordPopup";
 
 const Event = ({ event, setEvent, currEvent }) => {
     const [isMouseHover, setIsMouseHover] = useState(false);
@@ -69,7 +73,10 @@ const Event = ({ event, setEvent, currEvent }) => {
                     currEvent?.id == event.id ? "#00b19f" : "inherit",
                 color: currEvent?.id == event.id ? "white" : "inherit",
             }}
-            onClick={() => setEvent(event)}
+            onClick={() => {
+                queryClient.invalidateQueries(["trending_keywords"]);
+                setEvent(event);
+            }}
             onMouseEnter={() => setIsMouseHover(true)}
             onMouseLeave={() => setIsMouseHover(false)}
         >
@@ -124,6 +131,8 @@ const TopicGroup = ({
     currTopic,
     currEvent,
     handleDelete,
+    getTrendingMutation,
+    getEmergingMutation,
 }) => {
     const [isShowingEvents, setIsShowingEvents] = useState(false);
     const [isShowingMore, setIsShowingMore] = useState(false);
@@ -135,12 +144,6 @@ const TopicGroup = ({
 
     const [isCreatingEvent, setIsCreatingEvent] = useState(false);
     const [newEvent, setNewEvent] = useState("");
-
-    const handleClick = () => {
-        setIsShowingEvents(!isShowingEvents);
-        setTopic(topic);
-        setEvent(null);
-    };
 
     const ref = useOutsideClick(() => setIsEditingTopic(false));
 
@@ -167,6 +170,15 @@ const TopicGroup = ({
             });
         },
     });
+
+    const handleClick = () => {
+        setIsShowingEvents(!isShowingEvents);
+        setTopic(topic);
+        setEvent(null);
+
+        getTrendingMutation.mutate();
+        getEmergingMutation.mutate();
+    };
 
     return (
         <div
@@ -288,22 +300,35 @@ const TopicGroup = ({
     );
 };
 
-function KeywordGroupings({ keywords, topics, events }) {
+function KeywordGroupings({
+    keywords,
+    topics,
+    events,
+    idTrendingKeywords,
+    idEmergingKeywords,
+}) {
     // topic or event object
     const [currTopic, setCurrTopic] = useState(null);
     const [currEvent, setCurrEvent] = useState(null);
-
-    const [topicGroupArray, setTopicGroupArray] = useState([]);
+    const [trendingKeywords, setTrendingKeywords] = useState(
+        idTrendingKeywords ? idTrendingKeywords : []
+    );
+    const [emergingKeywords, setEmergingKeywords] = useState(
+        idEmergingKeywords ? idEmergingKeywords : []
+    );
 
     const [isCreatingTopic, setIsCreatingTopic] = useState(false);
     const [isCreatingKeyword, setIsCreatingKeyword] = useState(false);
+    const [isEditingKeyword, setIsEditingKeyword] = useState(false);
+    const [keywordToEdit, setKeywordToEdit] = useState();
 
+    const [topicGroupArray, setTopicGroupArray] = useState([]);
     const [allKeywords, setAllKeywords] = useState(new Set());
-
     const [newTopic, setNewTopic] = useState("");
 
+    // ----------------------------------------------------------------
+    // QUERIES & MUTATIONS
     const queryClient = useQueryClient();
-
     const deleteMutation = useMutation({
         mutationFn: (item) => {
             return deleteKeyword(`id=${item.id}`);
@@ -351,6 +376,45 @@ function KeywordGroupings({ keywords, topics, events }) {
         },
     });
 
+    const getTrendingMutation = useMutation({
+        mutationFn: () => {
+            const q = new URLSearchParams();
+            if (currTopic) q.append("id_topic", currTopic.id);
+            const queryString = q.toString();
+            return fetchTrendingKeywordData(queryString);
+        },
+        mutationKey: ["trending_keywords"],
+        onSuccess: async (data) => {
+            const d = await data;
+
+            setTrendingKeywords(d?.id_trending_keywords);
+        },
+    });
+
+    const getEmergingMutation = useMutation({
+        mutationFn: () => {
+            const q = new URLSearchParams();
+            if (currTopic) q.append("id_topic", currTopic.id);
+            const queryString = q.toString();
+            return fetchEmergingKeywordData(queryString);
+        },
+        mutationKey: ["emerging_keywords"],
+        onSuccess: async (data) => {
+            const d = await data;
+
+            setEmergingKeywords(d?.id_emerging_keywords);
+        },
+    });
+
+    const updateKeywordMutation = useMutation({
+        mutationFn: (data) => updateKeyword(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["core_keywords"],
+            });
+        },
+    });
+
     const handleDelete = (item) => {
         console.log("Delete item: " + item.id + ", " + item.keyword_chinese);
         deleteMutation.mutate(item);
@@ -358,6 +422,10 @@ function KeywordGroupings({ keywords, topics, events }) {
 
     const handleClickCreateTopic = () => {
         setIsCreatingTopic(!isCreatingTopic);
+    };
+
+    const handleEditSubmit = (item) => {
+        updateKeywordMutation.mutate(item);
     };
 
     // for updating topics or events
@@ -387,6 +455,8 @@ function KeywordGroupings({ keywords, topics, events }) {
                         key={t.topic}
                         handleDelete={deleteTopicsMutation.mutate}
                         handleUpdate={updateTopicsMutation.mutate}
+                        getTrendingMutation={getTrendingMutation}
+                        getEmergingMutation={getEmergingMutation}
                     />
                 );
             })
@@ -404,8 +474,17 @@ function KeywordGroupings({ keywords, topics, events }) {
                     allKeywords.add(item);
             }
         });
+
         setAllKeywords(new Set(allKeywords));
     }, [currTopic, currEvent, keywords]);
+
+    useEffect(() => {
+        setTrendingKeywords(idTrendingKeywords);
+    }, [idTrendingKeywords]);
+
+    useEffect(() => {
+        setEmergingKeywords(idEmergingKeywords);
+    }, [idEmergingKeywords]);
 
     return (
         <div className={styles.container}>
@@ -451,6 +530,8 @@ function KeywordGroupings({ keywords, topics, events }) {
                                 onClick={() => {
                                     setCurrTopic();
                                     setCurrEvent(null);
+                                    getEmergingMutation.mutate();
+                                    getTrendingMutation.mutate();
                                 }}
                             >
                                 All
@@ -485,16 +566,48 @@ function KeywordGroupings({ keywords, topics, events }) {
                     )}
                 </div>
                 <div className={styles.keywordContainerInner}>
-                    {Array.from(allKeywords).map((item) => {
-                        const kw = item.keyword_chinese.toString();
+                    {isEditingKeyword && (
+                        <EditKeywordPopup
+                            handleCancel={() => setIsEditingKeyword(false)}
+                            keyword={keywordToEdit}
+                            handleSubmit={(item) => handleEditSubmit(item)}
+                            topics={topics}
+                            events={events}
+                        />
+                    )}
+                    {[...allKeywords].map((item) => {
+                        let kw = item.keyword_chinese.toString();
+
+                        if (item.is_trending) {
+                            kw = kw + "🔥👤";
+                        } else if (trendingKeywords) {
+                            if (trendingKeywords.includes(item.id)) {
+                                kw = kw + "🔥🤖";
+                            }
+                        }
+
+                        if (item.is_emerging) {
+                            kw = kw + "📈👤";
+                        } else if (emergingKeywords) {
+                            if (emergingKeywords.includes(item.id)) {
+                                kw = kw + "📈🤖";
+                            }
+                        }
+
                         return (
                             <div
                                 className={styles.keyword}
-                                onClick={() => handleDelete(item)}
-                                key={kw}
+                                key={item.id}
+                                onClick={() => {
+                                    setKeywordToEdit(item);
+                                    setIsEditingKeyword(true);
+                                }}
                             >
                                 {kw}
-                                <MdCancel />
+                                <MdCancel
+                                    size={15}
+                                    onClick={() => handleDelete(item)}
+                                />
                             </div>
                         );
                     })}

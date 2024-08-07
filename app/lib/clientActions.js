@@ -187,6 +187,29 @@ export const fetchCoreKeywordData = async (qs = "") => {
     }
 };
 
+export const fetchTrendingKeywordFrequency = async (qs = "") => {
+    const request_url =
+        process.env.NEXT_PUBLIC_API_ROOT_URL + "keyword/trending/frequency";
+
+    const url = `${request_url}?${decodeURIComponent(qs)}`;
+    const token = getCookie("token");
+    const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+    };
+    try {
+        const response = await fetch(url, { headers });
+        if (!response.ok) {
+            throw new Error("Failed to fetch trending keyword data");
+        }
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error("Error fetching trending keyword data:", error.message);
+        throw error;
+    }
+};
+
 export const fetchTrendingKeywordData = async (qs = "") => {
     const request_url =
         process.env.NEXT_PUBLIC_API_ROOT_URL + "keyword/trending";
@@ -206,6 +229,29 @@ export const fetchTrendingKeywordData = async (qs = "") => {
         return data.data;
     } catch (error) {
         console.error("Error fetching trending keyword data:", error.message);
+        throw error;
+    }
+};
+
+export const fetchEmergingKeywordData = async (qs = "") => {
+    const request_url =
+        process.env.NEXT_PUBLIC_API_ROOT_URL + "keyword/emerging";
+
+    const url = `${request_url}?${decodeURIComponent(qs)}`;
+    const token = getCookie("token");
+    const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+    };
+    try {
+        const response = await fetch(url, { headers });
+        if (!response.ok) {
+            throw new Error("Failed to fetch trending keyword data");
+        }
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error("Error fetching emerging keyword data:", error.message);
         throw error;
     }
 };
@@ -275,6 +321,28 @@ export const createKeyword = async (data) => {
         return response.ok;
     } catch (error) {
         console.error("Error creating:", error.message);
+    }
+};
+
+export const updateKeyword = async (data) => {
+    const url = process.env.NEXT_PUBLIC_API_ROOT_URL + "keyword/update";
+    const token = getCookie("token");
+    const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+    };
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers,
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+            throw new Error("Failed to update keyword");
+        }
+        return response.ok;
+    } catch (error) {
+        console.error("Error updating:", error.message);
     }
 };
 
@@ -762,6 +830,19 @@ export const fetchNewsData = async (qs = "", isFreeText) => {
         console.error("Error fetching news data:", error.message);
         throw error;
     }
+    try {
+        const response = await fetch(url, {
+            headers,
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch news data");
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching news data:", error.message);
+        throw error;
+    }
 };
 
 export async function updateNewsLocation(
@@ -795,11 +876,28 @@ export async function updateNewsLocation(
             },
             body: JSON.stringify(requestBody),
         });
+        try {
+            const response = await fetch(url, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(requestBody),
+            });
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log("Update successful:", data);
+        } catch (error) {
+            console.error("Error updating news location:", error);
         }
-
         const data = await response.json();
         console.log("Update successful:", data);
     } catch (error) {
@@ -813,12 +911,10 @@ export const fetchProfiles = async () => {
     const url = `${baseURL}`;
     const token = getCookie("token");
     const headers = { Authorization: `Bearer ${token}` };
-    const method = "GET";
 
     try {
         const response = await fetch(url, {
             headers,
-            method,
         });
         if (!response.ok) {
             throw new Error("Failed to fetch profiles");
@@ -831,71 +927,112 @@ export const fetchProfiles = async () => {
     }
 };
 
-export const deleteProfile = async (qs = "") => {
-    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "profile";
+//SOURCE
+export const fetchSourceFrequencies = async (qs = "") => {
+    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "source/frequencies";
     const url = `${baseURL}?${qs}`;
+
     const token = getCookie("token");
     const headers = { Authorization: `Bearer ${token}` };
-    const method = "DELETE";
 
     try {
         const response = await fetch(url, {
             headers,
-            method,
         });
         if (!response.ok) {
-            throw new Error("Failed to delete profiles");
+            throw new Error("Failed to fetch sources");
         }
         const data = await response.json();
-        return data;
+        return data.data.source_frequency;
     } catch (error) {
-        console.error("Error deleting profiles data:", error.message);
+        console.error("Error fetching source data:", error.message);
         throw error;
     }
 };
 
-export const editProfile = async (qs = "") => {
-    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "profile";
+export const fetchMediumFrequencies = async (qs = "") => {
+    const baseURL =
+        process.env.NEXT_PUBLIC_API_ROOT_URL + "source/medium_frequencies";
     const url = `${baseURL}?${qs}`;
     const token = getCookie("token");
     const headers = { Authorization: `Bearer ${token}` };
-    const method = "PATCH";
 
     try {
         const response = await fetch(url, {
             headers,
-            method,
         });
         if (!response.ok) {
-            throw new Error("Failed to edit profiles");
+            throw new Error("Failed to fetch medium frequencies");
         }
         const data = await response.json();
-        return data;
+        return data.data.medium_frequency;
     } catch (error) {
-        console.error("Error editing profiles data:", error.message);
+        console.error("Error fetching medium frequencies:", error.message);
         throw error;
     }
 };
 
-export const createProfile = async (qs = "") => {
-    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "profile";
+export const fetchMediumFrequenciesByDate = async (qs = "") => {
+    const baseURL =
+        process.env.NEXT_PUBLIC_API_ROOT_URL +
+        "source/medium_frequencies_by_date";
     const url = `${baseURL}?${qs}`;
     const token = getCookie("token");
     const headers = { Authorization: `Bearer ${token}` };
-    const method = "POST";
 
     try {
         const response = await fetch(url, {
             headers,
-            method,
         });
         if (!response.ok) {
-            throw new Error("Failed to edit profiles");
+            throw new Error("Failed to fetch medium frequencies");
         }
         const data = await response.json();
-        return data;
+        return data.data.medium_frequencies_by_date;
     } catch (error) {
-        console.error("Error editing profiles data:", error.message);
+        console.error("Error fetching medium frequencies:", error.message);
+        throw error;
+    }
+};
+
+export const fetchMediumData = async (qs = "") => {
+    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "source/medium";
+    const url = `${baseURL}?${qs}`;
+    const token = getCookie("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    try {
+        const response = await fetch(url, {
+            headers,
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch medium data");
+        }
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error("Error fetching medium data:", error.message);
+        throw error;
+    }
+};
+
+export const fetchSources = async (qs = "") => {
+    const baseURL = process.env.NEXT_PUBLIC_API_ROOT_URL + "source";
+    const url = `${baseURL}?${qs}`;
+    const token = getCookie("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    try {
+        const response = await fetch(url, {
+            headers,
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch sources");
+        }
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error("Error fetching source data:", error.message);
         throw error;
     }
 };

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import styles from "./detailbar.module.css";
 import { Modal } from "../modal/modal";
@@ -9,15 +8,7 @@ import { updateNewsLocation } from "../../../lib/clientActions";
 const DEFAULT_CENTER = [22.349, 114.136];
 let apikey = "28ba7bd74cbe4af890d90991f9d5a86e"; // key for text analytic platform
 
-const Detailbar = ({
-  name,
-  closeDetail,
-  selectGroup,
-  id,
-  qs,
-  onEnglishKeywordClick,
-  onChineseKeywordClick,
-}) => {
+const Detailbar = ({ name, closeDetail, selectGroup, id, qs, onEnglishKeywordClick, onChineseKeywordClick }) => {
   const [activeItem, setActiveItem] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [newLocation, setNewLocation] = useState({
@@ -96,14 +87,6 @@ const Detailbar = ({
               <div className={styles.text}>
                 <div className={styles.linkHeader}>
                   <span className={styles.biasLevelCard}>{src.bias_level}</span>
-                  <Image
-                    className={styles.thumbnail}
-                    src={src.url_thumbnail}
-                    alt={src.url_thumbnail}
-                    width={200}
-                    height={200}
-                    layout="responsive"
-                  />
                   <span className={styles.link}>
                     <span className={styles.square}></span>
                     <a>{src.title}</a>
@@ -148,20 +131,10 @@ const Detailbar = ({
         <>
           <div className={styles.nuggetsList}>
             {grp?.["keyword_chinese"].map((keyword) => (
-              <div
-                onClick={() => onChineseKeywordClick(keyword)}
-                className={styles.nugget}
-              >
-                {keyword}
-              </div>
+              <div onClick={() => onChineseKeywordClick(keyword)} className={styles.nugget}>{keyword}</div>
             ))}
             {grp?.["keyword_english"].map((keyword) => (
-              <div
-                onClick={() => onEnglishKeywordClick(keyword)}
-                className={styles.nugget}
-              >
-                {keyword}
-              </div>
+              <div onClick={() => onEnglishKeywordClick(keyword)} className={styles.nugget}>{keyword}</div>
             ))}
           </div>
         </>

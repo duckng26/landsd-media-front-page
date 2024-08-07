@@ -76,7 +76,9 @@ const Nuggy = ({ keyword, location, selected, handleClick }) => {
         return (
             <div className={styles.tt}>
                 {location.map((l) => (
-                    <div className={styles.location}>{l}</div>
+                    <div key={keyword + "-" + l} className={styles.location}>
+                        {l}
+                    </div>
                 ))}
             </div>
         );
@@ -188,6 +190,7 @@ function KeywordSuggestions({ keywords, topics, events }) {
                     {keywords?.map((kw) => {
                         return (
                             <Nuggy
+                                key={"nuggy-" + kw.id}
                                 keyword={kw.keyword}
                                 location={kw.location}
                                 selected={selectedKwIds.has(kw.id)}
